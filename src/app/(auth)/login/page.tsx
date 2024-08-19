@@ -1,19 +1,30 @@
 "use client";
 
+import { signIn } from "next-auth/react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
-  const handleLogin = (event: any) => {
+  const { push } = useRouter();
+  const handleLogin = async (event: any) => {
     event.preventDefault();
-    fetch("/api/auth/login", {
-      method: "POST",
-
-      body: JSON.stringify({
+    try {
+      const res = await signIn("credentials", {
         email: event.currentTarget.email.value,
         password: event.currentTarget.password.value,
-      }),
-    });
+        redirect: false,
+        callbackUrl: "/",
+      });
+      if (!res?.error) {
+        push("/");
+      } else {
+        console.log(res.error);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
+
   return (
     <div className="h-screen w-100 flex justify-center items-center">
       <div className="bg-white shadow-md border border-gray-200 rounded-lg max-w-sm p-4 sm:p-6 lg:p-8 dark:bg-gray-800 dark:border-gray-700">
