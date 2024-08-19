@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.centered-text-container {
+  display: flex;
+  justify-content: center; /* Tengah horizontal */
+  align-items: center; /* Tengah vertikal */
+  height: 25vh; /* Menentukan tinggi kontainer */
+}
+
+.centered-text {
+  font-size: 24px;
+  text-align: center; /* Tengah horizontal jika diperlukan */
+}

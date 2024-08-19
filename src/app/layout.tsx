@@ -1,11 +1,32 @@
-const RootLayout = ({ children }: { children: React.ReactNode }) => (
-  <html lang="en">
-    <body>
-      <header>Header</header>
-      {children}
-      <footer>Footer</footer>
-    </body>
-  </html>
-);
+"use client";
 
-export default RootLayout;
+import NavBar from "./navbar";
+import "./globals.css";
+import { Inter } from "next/font/google";
+import { usePathname } from "next/navigation";
+import { useState } from "react";
+
+const inter = Inter({ subsets: ["latin"] });
+
+const disableNavbar = ["/login", "/register"];
+
+// export const metadata = {
+//   title: "Create Next App",
+// };
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const pathName = usePathname();
+  const [state, setState] = useState(0);
+  return (
+    <html lang="en">
+      <body className={inter.className}>
+        {!disableNavbar.includes(pathName) && <NavBar />}
+        {children}
+      </body>
+    </html>
+  );
+}

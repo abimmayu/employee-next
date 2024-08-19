@@ -1,20 +1,54 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 
 export default function NavBar() {
+  const pathName = usePathname();
+  const router = useRouter();
+
   return (
-    <nav className="flex bg-gray-500 py-5 px-5">
-      <h1 className="text-white">Navigation Bar</h1>
-      <ul className="flex ml-5">
-        <Link href="/">
-          <li className="mr-3 text-blue-500 cursor-pointer">Home</li>
-        </Link>
-        <Link href="/about">
-          <li className="mr-3 text-blue-500 cursor-pointer">About</li>
-        </Link>
-        <Link href="/about/profile">
-          <li className="mr-3 text-blue-500 cursor-pointer">Profile</li>
-        </Link>
-      </ul>
+    <nav className="flex bg-gray-500 py-2 px-5 justify-between">
+      <div className="flex">
+        <h1 className="text-white">Navigation Bar</h1>
+        <ul className="flex ml-5">
+          <Link href="/">
+            <li
+              className={`mr-3 ${
+                pathName === "/" ? "text-blue-500" : "text-white"
+              } cursor-pointer`}
+            >
+              Home
+            </li>
+          </Link>
+          <Link href="/about">
+            <li
+              className={`mr-3 ${
+                pathName === "/about" ? "text-blue-500" : "text-white"
+              } cursor-pointer`}
+            >
+              About
+            </li>
+          </Link>
+          <Link href="/about/profile">
+            <li
+              className={`mr-3 ${
+                pathName === "/about/profile" ? "text-blue-500" : "text-white"
+              } cursor-pointer`}
+            >
+              Profile
+            </li>
+          </Link>
+        </ul>
+      </div>
+      <div>
+        <button
+          className="bg-white rounded-md px-3 text-sm h-7 cursor-pointer"
+          onClick={() => router.push("/login")}
+        >
+          Login
+        </button>
+      </div>
     </nav>
   );
 }

@@ -7,8 +7,8 @@ export default function AboutLayout({
 }) {
   return (
     <>
-      <nav className="fixed right-0 top-0 h-screen w-60 bg-gray-800">
-        <ul className="text-white p-5">
+      <nav className="fixed right-0 top-11 h-screen w-60 bg-gray-500">
+        <ul className="text-white p-2">
           <li>Home</li>
           <li>About</li>
           <li>Profile</li>
