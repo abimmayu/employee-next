@@ -2,12 +2,13 @@
 
 import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 export default function NavBar() {
   const pathName = usePathname();
+  const router = useRouter();
 
-  const { status }: { status: string } = useSession();
+  const { data: session, status }: { data: any; status: string } = useSession();
   console.log("🚀 ~ NavBar ~ status:", status);
 
   return (
@@ -24,7 +25,7 @@ export default function NavBar() {
               Home
             </li>
           </Link>
-          <Link href="/about">
+          {/* <Link href="/about">
             <li
               className={`mr-3 ${
                 pathName === "/about" ? "text-blue-500" : "text-white"
@@ -32,7 +33,7 @@ export default function NavBar() {
             >
               About
             </li>
-          </Link>
+          </Link> */}
           <Link href="/employee">
             <li
               className={`mr-3 ${
@@ -46,12 +47,15 @@ export default function NavBar() {
       </div>
       <div>
         {status === "authenticated" ? (
-          <button
-            className="bg-white rounded-md px-3 text-sm h-7 cursor-pointer"
-            onClick={() => signOut()}
-          >
-            Logout
-          </button>
+          <div className="flex">
+            <h4 className="text-white mr-4">{session?.user?.name}</h4>
+            <button
+              className="bg-white rounded-md px-3 text-sm h-7 cursor-pointer"
+              onClick={() => signOut()}
+            >
+              Logout
+            </button>
+          </div>
         ) : (
           <button
             className="bg-white rounded-md px-3 text-sm h-7 cursor-pointer"

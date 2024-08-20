@@ -1,10 +1,13 @@
 "use client";
 
+import { getData, updateData } from "@/services/employee";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-export default function LoginPage() {
+type EditPageProps = { params: { id: string[] } };
+export default function EditPage(props: EditPageProps) {
+  const { params } = props;
   const { push } = useRouter();
   const [error, setError] = useState("");
   const [isLoading, setLoading] = useState(false);
@@ -13,19 +16,30 @@ export default function LoginPage() {
     event.preventDefault();
     setError("");
     setLoading(true);
-    const res = await fetch("/api/auth/register", {
-      method: "POST",
-      body: JSON.stringify({
-        name: event.target.name.value,
-        occupation: event.target.occupation.value,
-        email: event.target.email.value,
+    const res = await updateData(
+      "http://localhost:3000/api/employee?id=" + params.id[0],
+      {
+        name:
+          event.target.name.value !== params.id[1]
+            ? event.target.name.value
+            : params.id[1],
+        occupation:
+          event.target.occupation.value !== params.id[2]
+            ? event.target.occupation.value
+            : params.id[2],
+        email:
+          event.target.email.value !== params.id[3]
+            ? event.target.email.value
+            : params.id[3],
         password: event.target.password.value,
-      }),
-    });
-    if (res.status === 200) {
+      }
+    );
+    console.log("🚀 ~ handleSubmit ~ res:", res);
+    if (res.statusCode === 200) {
       event.target.reset();
-      push("/login");
+      push("/employee");
       setLoading(false);
+      setError("");
     } else {
       setError("Email Already Exist");
       setLoading(false);
@@ -43,7 +57,7 @@ export default function LoginPage() {
       <div className="bg-white shadow-md border border-gray-200 rounded-lg w-96 p-4 sm:p-6 lg:p-8 dark:bg-gray-800 dark:border-gray-700">
         <form className="space-y-6" onSubmit={(e) => handleSubmit(e)}>
           <h3 className="text-xl font-medium text-gray-900 dark:text-white">
-            Sign Up to our platform
+            Edit the data!
           </h3>
           <div>
             <label
@@ -57,7 +71,7 @@ export default function LoginPage() {
               name="name"
               id="name"
               className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-              placeholder="full name"
+              placeholder={decodeURIComponent(params.id[1])}
               required
             />
           </div>
@@ -73,7 +87,7 @@ export default function LoginPage() {
               name="occupation"
               id="fullname"
               className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-              placeholder="full name"
+              placeholder={decodeURIComponent(params.id[2])}
               required
             />
           </div>
@@ -89,7 +103,7 @@ export default function LoginPage() {
               name="email"
               id="email"
               className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-              placeholder="name@company.com"
+              placeholder={decodeURIComponent(params.id[3])}
               required
             />
           </div>
@@ -114,9 +128,9 @@ export default function LoginPage() {
             type="submit"
             className="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
           >
-            {isLoading ? "Loading..." : "Sign Up"}
+            {isLoading ? "Loading..." : "Edit"}
           </button>
-          <div className="text-sm font-medium text-gray-500 dark:text-gray-300">
+          {/* <div className="text-sm font-medium text-gray-500 dark:text-gray-300">
             have registered?{" "}
             <Link
               href="/login"
@@ -124,7 +138,7 @@ export default function LoginPage() {
             >
               Sign In
             </Link>
-          </div>
+          </div> */}
         </form>
       </div>
     </div>

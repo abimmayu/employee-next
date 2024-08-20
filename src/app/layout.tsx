@@ -10,10 +10,6 @@ const inter = Inter({ subsets: ["latin"] });
 
 const disableNavbar = ["/login", "/register"];
 
-// export const metadata = {
-//   title: "Create Next App",
-// };
-
 export default function RootLayout({
   children,
 }: {
